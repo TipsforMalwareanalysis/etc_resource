@@ -1,0 +1,152 @@
+remnux@remnux:~/Downloads$ capa -v gaSJmErdf.exe 
+1036 functions [00:08, 119.29 functions/s]
+md5                  1e58b82fc21d1631e031d60c38fcd075
+sha1                 f55c8a6d162480936ce4d07d20be820ba361022d
+sha256               21c082d4996ce353c425b3c521bb944712a120f53d871871fb59b072002b0bf2
+path                 gaSJmErdf.exe
+timestamp            2020-08-05T03:29:35.556369
+capa version         v1.0.0-9-g97b8a5e
+format               auto
+extractor            VivisectFeatureExtractor
+base address         0x400000
+rules                (embedded rules)
+function count       1036
+total feature count  29481
+
+execute anti-VM instructions (3 matches)
+namespace  anti-analysis/anti-vm/vm-detection
+scope      basic block
+matches    0x41CAA4
+           0x41C9DC
+           0x407D2D
+
+send data (3 matches)
+namespace    communication
+description  all known techniques for sending data to a potential C2 server
+scope        function
+matches      0x40DF90
+             0x407669
+             0x416331
+
+connect to HTTP server (3 matches)
+namespace  communication/http/client
+scope      function
+matches    0x40DF90
+           0x407669
+           0x416331
+
+create HTTP request (3 matches)
+namespace  communication/http/client
+scope      function
+matches    0x40DF90
+           0x407669
+           0x416331
+
+send HTTP request (3 matches)
+namespace  communication/http/client
+scope      function
+matches    0x40DF90
+           0x407669
+           0x416331
+
+encode data using XOR (24 matches)
+namespace  data-manipulation/encoding/xor
+scope      basic block
+matches    0x403084
+           0x40BB0F
+           0x407791
+           0x41AA97
+           0x402B9B
+           0x419920
+           0x407A30
+           0x402C24
+           0x403372
+           0x407AB0
+           0x401133
+           0x401037
+           0x40BC39
+           0x4079C1
+           0x41AB42
+           0x4033CB
+           0x407850
+           0x401B54
+           0x4078D6
+           0x402B62
+           0x403264
+           0x4031EF
+           0x419CF2
+           0x401175
+
+contain a resource (.rsrc) section
+namespace  executable/pe/section/rsrc
+scope      file
+
+query environment variable
+namespace  host-interaction/environment-variable
+scope      function
+matches    0x42D9FE
+
+set environment variable
+namespace  host-interaction/environment-variable
+scope      function
+matches    0x42DDDF
+
+get common file path
+namespace  host-interaction/file-system
+scope      function
+matches    0x428513
+
+enumerate files via kernel32 functions
+namespace  host-interaction/file-system/files/list
+scope      function
+matches    0x42CFB8
+
+read file (4 matches)
+namespace  host-interaction/file-system/read
+scope      function
+matches    0x429C6B
+           0x42A0EA
+           0x429B1F
+           0x421557
+
+write file (5 matches)
+namespace  host-interaction/file-system/write
+scope      function
+matches    0x42C0AA
+           0x42BFBC
+           0x42BEDD
+           0x42BC36
+           0x42C2BF
+
+get disk information (2 matches)
+namespace  host-interaction/hardware/storage
+scope      function
+matches    0x420C48
+           0x43133F
+
+terminate process (3 matches)
+namespace  host-interaction/process/terminate
+scope      function
+matches    0x424063
+           0x41CF24
+           0x420F47
+
+link function at runtime
+namespace  linking/runtime-linking
+scope      function
+matches    0x4240E9
+
+parse PE header (11 matches)
+namespace  load-code/pe
+scope      function
+matches    0x41DA40
+           0x41E6F0
+           0x4240A5
+           0x41C507
+           0x41BAA8
+           0x437A00
+           0x40DF90
+           0x41CCB1
+           0x402496
+           0x41FA90
+           0x41AEFC

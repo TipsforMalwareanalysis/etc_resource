@@ -1,0 +1,796 @@
+remnux@remnux:~/Downloads$ capa -vv gaSJmErdf.exe 
+1036 functions [00:08, 117.89 functions/s]
+md5                  1e58b82fc21d1631e031d60c38fcd075
+sha1                 f55c8a6d162480936ce4d07d20be820ba361022d
+sha256               21c082d4996ce353c425b3c521bb944712a120f53d871871fb59b072002b0bf2
+path                 gaSJmErdf.exe
+timestamp            2020-08-05T03:30:14.177721
+capa version         v1.0.0-9-g97b8a5e
+format               auto
+extractor            VivisectFeatureExtractor
+base address         0x400000
+rules                (embedded rules)
+function count       1036
+total feature count  29481
+
+execute anti-VM instructions (3 matches)
+namespace  anti-analysis/anti-vm/vm-detection
+author     moritz.raabe@fireeye.com
+scope      basic block
+att&ck     Defense Evasion::Virtualization/Sandbox Evasion::System Checks [T1497.001]
+mbc        Anti-Behavioral Analysis::Virtual Machine Detection::Instruction Testing
+examples   Practical Malware Analysis Lab 17-03.exe_:0x401A80
+basic block @ 0x407D2D
+  or:
+    mnemonic: cpuid @ 0x407D4A
+basic block @ 0x41C9DC
+  or:
+    mnemonic: cpuid @ 0x41C9F7, 0x41CA32
+basic block @ 0x41CAA4
+  or:
+    mnemonic: cpuid @ 0x41CAAA
+
+send data (3 matches)
+namespace    communication
+author       william.ballenthin@fireeye.com
+description  all known techniques for sending data to a potential C2 server
+scope        function
+examples     BFB9B5391A13D0AFD787E87AB90F14F5:0x13145D60
+function @ 0x407669
+  or:
+    match: send HTTP request @ 0x407669
+      or:
+        and:
+          or:
+            api: wininet.HttpOpenRequest @ 0x40781D
+            api: wininet.InternetConnect @ 0x4077D0
+          or:
+            api: wininet.HttpSendRequest @ 0x407AFD
+function @ 0x40DF90
+  or:
+    match: send HTTP request @ 0x40DF90
+      or:
+        and:
+          or:
+            api: wininet.HttpOpenRequest @ 0x412A26
+            api: wininet.InternetConnect @ 0x412873
+          or:
+            api: wininet.HttpSendRequest @ 0x413264
+function @ 0x416331
+  or:
+    match: send HTTP request @ 0x416331
+      or:
+        and:
+          or:
+            api: wininet.HttpOpenRequest @ 0x41648E
+            api: wininet.InternetConnect @ 0x4163FB
+          or:
+            api: wininet.HttpSendRequest @ 0x41658D
+
+connect to HTTP server (3 matches)
+namespace  communication/http/client
+author     michael.hunhoff@fireeye.com
+scope      function
+examples   6f99a2c8944cb02ff28c6f9ced59b161:0x40E2F0
+function @ 0x407669
+  and:
+    optional:
+      match: create HTTP request @ 0x407669
+        and:
+          api: wininet.InternetOpen @ 0x4077AB
+          optional:
+            api: wininet.InternetCloseHandle @ 0x407B06, 0x407B42, 0x407B49
+    api: wininet.InternetConnect @ 0x4077D0
+function @ 0x40DF90
+  and:
+    optional:
+      match: create HTTP request @ 0x40DF90
+        and:
+          api: wininet.InternetOpen @ 0x412849
+          optional:
+            api: wininet.InternetCloseHandle @ 0x413AEA, 0x413B05, 0x413B12
+    api: wininet.InternetConnect @ 0x412873
+function @ 0x416331
+  and:
+    optional:
+      match: create HTTP request @ 0x416331
+        and:
+          api: wininet.InternetOpen @ 0x4163CE
+          optional:
+            api: wininet.InternetCloseHandle @ 0x416999, 0x4169BA, 0x4169C5
+    api: wininet.InternetConnect @ 0x4163FB
+
+create HTTP request (3 matches)
+namespace  communication/http/client
+author     michael.hunhoff@fireeye.com
+scope      function
+examples   6f99a2c8944cb02ff28c6f9ced59b161:0x40E2F0
+function @ 0x407669
+  and:
+    api: wininet.InternetOpen @ 0x4077AB
+    optional:
+      api: wininet.InternetCloseHandle @ 0x407B06, 0x407B42, 0x407B49
+function @ 0x40DF90
+  and:
+    api: wininet.InternetOpen @ 0x412849
+    optional:
+      api: wininet.InternetCloseHandle @ 0x413AEA, 0x413B05, 0x413B12
+function @ 0x416331
+  and:
+    api: wininet.InternetOpen @ 0x4163CE
+    optional:
+      api: wininet.InternetCloseHandle @ 0x416999, 0x4169BA, 0x4169C5
+
+send HTTP request (3 matches)
+namespace  communication/http/client
+author     moritz.raabe@fireeye.com
+scope      function
+examples   BFB9B5391A13D0AFD787E87AB90F14F5:0x13145D60, 6A352C3E55E8AE5ED39DC1BE7FB964B1:0x100026E0
+function @ 0x407669
+  or:
+    and:
+      or:
+        api: wininet.HttpOpenRequest @ 0x40781D
+        api: wininet.InternetConnect @ 0x4077D0
+      or:
+        api: wininet.HttpSendRequest @ 0x407AFD
+function @ 0x40DF90
+  or:
+    and:
+      or:
+        api: wininet.HttpOpenRequest @ 0x412A26
+        api: wininet.InternetConnect @ 0x412873
+      or:
+        api: wininet.HttpSendRequest @ 0x413264
+function @ 0x416331
+  or:
+    and:
+      or:
+        api: wininet.HttpOpenRequest @ 0x41648E
+        api: wininet.InternetConnect @ 0x4163FB
+      or:
+        api: wininet.HttpSendRequest @ 0x41658D
+
+encode data using XOR (24 matches)
+namespace  data-manipulation/encoding/xor
+author     moritz.raabe@fireeye.com
+scope      basic block
+att&ck     Defense Evasion::Obfuscated Files or Information [T1027]
+examples   2D3EDC218A90F03089CC01715A9F047F:0x403D7E
+basic block @ 0x401037
+  and:
+    characteristic: tight loop @ 0x401037
+    characteristic: nzxor @ 0x40103C
+    not:
+      or:
+        number: 0xFFFFFFFF
+        number: 0xFFFFFFFFFFFFFFFF
+        number: 0xFFFFFFF
+        number: 0xFFFFFFFFFFFFFFF
+        number: 0x7EFEFEFF
+        number: 0x81010101
+        number: 0x81010100
+        number: 0x7EFEFEFEFEFEFEFF
+        number: 0x8101010101010101
+        number: 0x8101010101010100
+basic block @ 0x401133
+  and:
+    characteristic: tight loop @ 0x401133
+    characteristic: nzxor @ 0x401138
+    not:
+      or:
+        number: 0xFFFFFFFF
+        number: 0xFFFFFFFFFFFFFFFF
+        number: 0xFFFFFFF
+        number: 0xFFFFFFFFFFFFFFF
+        number: 0x7EFEFEFF
+        number: 0x81010101
+        number: 0x81010100
+        number: 0x7EFEFEFEFEFEFEFF
+        number: 0x8101010101010101
+        number: 0x8101010101010100
+basic block @ 0x401175
+  and:
+    characteristic: tight loop @ 0x401175
+    characteristic: nzxor @ 0x40117A
+    not:
+      or:
+        number: 0xFFFFFFFF
+        number: 0xFFFFFFFFFFFFFFFF
+        number: 0xFFFFFFF
+        number: 0xFFFFFFFFFFFFFFF
+        number: 0x7EFEFEFF
+        number: 0x81010101
+        number: 0x81010100
+        number: 0x7EFEFEFEFEFEFEFF
+        number: 0x8101010101010101
+        number: 0x8101010101010100
+basic block @ 0x401B54
+  and:
+    characteristic: tight loop @ 0x401B54
+    characteristic: nzxor @ 0x401B59
+    not:
+      or:
+        number: 0xFFFFFFFF
+        number: 0xFFFFFFFFFFFFFFFF
+        number: 0xFFFFFFF
+        number: 0xFFFFFFFFFFFFFFF
+        number: 0x7EFEFEFF
+        number: 0x81010101
+        number: 0x81010100
+        number: 0x7EFEFEFEFEFEFEFF
+        number: 0x8101010101010101
+        number: 0x8101010101010100
+basic block @ 0x402B62
+  and:
+    characteristic: tight loop @ 0x402B62
+    characteristic: nzxor @ 0x402B6B
+    not:
+      or:
+        number: 0xFFFFFFFF
+        number: 0xFFFFFFFFFFFFFFFF
+        number: 0xFFFFFFF
+        number: 0xFFFFFFFFFFFFFFF
+        number: 0x7EFEFEFF
+        number: 0x81010101
+        number: 0x81010100
+        number: 0x7EFEFEFEFEFEFEFF
+        number: 0x8101010101010101
+        number: 0x8101010101010100
+basic block @ 0x402B9B
+  and:
+    characteristic: tight loop @ 0x402B9B
+    characteristic: nzxor @ 0x402BA4
+    not:
+      or:
+        number: 0xFFFFFFFF
+        number: 0xFFFFFFFFFFFFFFFF
+        number: 0xFFFFFFF
+        number: 0xFFFFFFFFFFFFFFF
+        number: 0x7EFEFEFF
+        number: 0x81010101
+        number: 0x81010100
+        number: 0x7EFEFEFEFEFEFEFF
+        number: 0x8101010101010101
+        number: 0x8101010101010100
+basic block @ 0x402C24
+  and:
+    characteristic: tight loop @ 0x402C24
+    characteristic: nzxor @ 0x402C2D
+    not:
+      or:
+        number: 0xFFFFFFFF
+        number: 0xFFFFFFFFFFFFFFFF
+        number: 0xFFFFFFF
+        number: 0xFFFFFFFFFFFFFFF
+        number: 0x7EFEFEFF
+        number: 0x81010101
+        number: 0x81010100
+        number: 0x7EFEFEFEFEFEFEFF
+        number: 0x8101010101010101
+        number: 0x8101010101010100
+basic block @ 0x403084
+  and:
+    characteristic: tight loop @ 0x403084
+    characteristic: nzxor @ 0x40308D
+    not:
+      or:
+        number: 0xFFFFFFFF
+        number: 0xFFFFFFFFFFFFFFFF
+        number: 0xFFFFFFF
+        number: 0xFFFFFFFFFFFFFFF
+        number: 0x7EFEFEFF
+        number: 0x81010101
+        number: 0x81010100
+        number: 0x7EFEFEFEFEFEFEFF
+        number: 0x8101010101010101
+        number: 0x8101010101010100
+basic block @ 0x4031EF
+  and:
+    characteristic: tight loop @ 0x4031EF
+    characteristic: nzxor @ 0x4031F8
+    not:
+      or:
+        number: 0xFFFFFFFF
+        number: 0xFFFFFFFFFFFFFFFF
+        number: 0xFFFFFFF
+        number: 0xFFFFFFFFFFFFFFF
+        number: 0x7EFEFEFF
+        number: 0x81010101
+        number: 0x81010100
+        number: 0x7EFEFEFEFEFEFEFF
+        number: 0x8101010101010101
+        number: 0x8101010101010100
+basic block @ 0x403264
+  and:
+    characteristic: tight loop @ 0x403264
+    characteristic: nzxor @ 0x40326D
+    not:
+      or:
+        number: 0xFFFFFFFF
+        number: 0xFFFFFFFFFFFFFFFF
+        number: 0xFFFFFFF
+        number: 0xFFFFFFFFFFFFFFF
+        number: 0x7EFEFEFF
+        number: 0x81010101
+        number: 0x81010100
+        number: 0x7EFEFEFEFEFEFEFF
+        number: 0x8101010101010101
+        number: 0x8101010101010100
+basic block @ 0x403372
+  and:
+    characteristic: tight loop @ 0x403372
+    characteristic: nzxor @ 0x40337B
+    not:
+      or:
+        number: 0xFFFFFFFF
+        number: 0xFFFFFFFFFFFFFFFF
+        number: 0xFFFFFFF
+        number: 0xFFFFFFFFFFFFFFF
+        number: 0x7EFEFEFF
+        number: 0x81010101
+        number: 0x81010100
+        number: 0x7EFEFEFEFEFEFEFF
+        number: 0x8101010101010101
+        number: 0x8101010101010100
+basic block @ 0x4033CB
+  and:
+    characteristic: tight loop @ 0x4033CB
+    characteristic: nzxor @ 0x4033D4
+    not:
+      or:
+        number: 0xFFFFFFFF
+        number: 0xFFFFFFFFFFFFFFFF
+        number: 0xFFFFFFF
+        number: 0xFFFFFFFFFFFFFFF
+        number: 0x7EFEFEFF
+        number: 0x81010101
+        number: 0x81010100
+        number: 0x7EFEFEFEFEFEFEFF
+        number: 0x8101010101010101
+        number: 0x8101010101010100
+basic block @ 0x407791
+  and:
+    characteristic: tight loop @ 0x407791
+    characteristic: nzxor @ 0x407796
+    not:
+      or:
+        number: 0xFFFFFFFF
+        number: 0xFFFFFFFFFFFFFFFF
+        number: 0xFFFFFFF
+        number: 0xFFFFFFFFFFFFFFF
+        number: 0x7EFEFEFF
+        number: 0x81010101
+        number: 0x81010100
+        number: 0x7EFEFEFEFEFEFEFF
+        number: 0x8101010101010101
+        number: 0x8101010101010100
+basic block @ 0x407850
+  and:
+    characteristic: tight loop @ 0x407850
+    characteristic: nzxor @ 0x407858
+    not:
+      or:
+        number: 0xFFFFFFFF
+        number: 0xFFFFFFFFFFFFFFFF
+        number: 0xFFFFFFF
+        number: 0xFFFFFFFFFFFFFFF
+        number: 0x7EFEFEFF
+        number: 0x81010101
+        number: 0x81010100
+        number: 0x7EFEFEFEFEFEFEFF
+        number: 0x8101010101010101
+        number: 0x8101010101010100
+basic block @ 0x4078D6
+  and:
+    characteristic: tight loop @ 0x4078D6
+    characteristic: nzxor @ 0x4078DB
+    not:
+      or:
+        number: 0xFFFFFFFF
+        number: 0xFFFFFFFFFFFFFFFF
+        number: 0xFFFFFFF
+        number: 0xFFFFFFFFFFFFFFF
+        number: 0x7EFEFEFF
+        number: 0x81010101
+        number: 0x81010100
+        number: 0x7EFEFEFEFEFEFEFF
+        number: 0x8101010101010101
+        number: 0x8101010101010100
+basic block @ 0x4079C1
+  and:
+    characteristic: tight loop @ 0x4079C1
+    characteristic: nzxor @ 0x4079C6
+    not:
+      or:
+        number: 0xFFFFFFFF
+        number: 0xFFFFFFFFFFFFFFFF
+        number: 0xFFFFFFF
+        number: 0xFFFFFFFFFFFFFFF
+        number: 0x7EFEFEFF
+        number: 0x81010101
+        number: 0x81010100
+        number: 0x7EFEFEFEFEFEFEFF
+        number: 0x8101010101010101
+        number: 0x8101010101010100
+basic block @ 0x407A30
+  and:
+    characteristic: tight loop @ 0x407A30
+    characteristic: nzxor @ 0x407A38
+    not:
+      or:
+        number: 0xFFFFFFFF
+        number: 0xFFFFFFFFFFFFFFFF
+        number: 0xFFFFFFF
+        number: 0xFFFFFFFFFFFFFFF
+        number: 0x7EFEFEFF
+        number: 0x81010101
+        number: 0x81010100
+        number: 0x7EFEFEFEFEFEFEFF
+        number: 0x8101010101010101
+        number: 0x8101010101010100
+basic block @ 0x407AB0
+  and:
+    characteristic: tight loop @ 0x407AB0
+    characteristic: nzxor @ 0x407AB5
+    not:
+      or:
+        number: 0xFFFFFFFF
+        number: 0xFFFFFFFFFFFFFFFF
+        number: 0xFFFFFFF
+        number: 0xFFFFFFFFFFFFFFF
+        number: 0x7EFEFEFF
+        number: 0x81010101
+        number: 0x81010100
+        number: 0x7EFEFEFEFEFEFEFF
+        number: 0x8101010101010101
+        number: 0x8101010101010100
+basic block @ 0x40BB0F
+  and:
+    characteristic: tight loop @ 0x40BB0F
+    characteristic: nzxor @ 0x40BB14
+    not:
+      or:
+        number: 0xFFFFFFFF
+        number: 0xFFFFFFFFFFFFFFFF
+        number: 0xFFFFFFF
+        number: 0xFFFFFFFFFFFFFFF
+        number: 0x7EFEFEFF
+        number: 0x81010101
+        number: 0x81010100
+        number: 0x7EFEFEFEFEFEFEFF
+        number: 0x8101010101010101
+        number: 0x8101010101010100
+basic block @ 0x40BC39
+  and:
+    characteristic: tight loop @ 0x40BC39
+    characteristic: nzxor @ 0x40BC3E
+    not:
+      or:
+        number: 0xFFFFFFFF
+        number: 0xFFFFFFFFFFFFFFFF
+        number: 0xFFFFFFF
+        number: 0xFFFFFFFFFFFFFFF
+        number: 0x7EFEFEFF
+        number: 0x81010101
+        number: 0x81010100
+        number: 0x7EFEFEFEFEFEFEFF
+        number: 0x8101010101010101
+        number: 0x8101010101010100
+basic block @ 0x419920
+  and:
+    characteristic: tight loop @ 0x419920
+    characteristic: nzxor @ 0x419927
+    not:
+      or:
+        number: 0xFFFFFFFF
+        number: 0xFFFFFFFFFFFFFFFF
+        number: 0xFFFFFFF
+        number: 0xFFFFFFFFFFFFFFF
+        number: 0x7EFEFEFF
+        number: 0x81010101
+        number: 0x81010100
+        number: 0x7EFEFEFEFEFEFEFF
+        number: 0x8101010101010101
+        number: 0x8101010101010100
+basic block @ 0x419CF2
+  and:
+    characteristic: tight loop @ 0x419CF2
+    characteristic: nzxor @ 0x419D15
+    not:
+      or:
+        number: 0xFFFFFFFF
+        number: 0xFFFFFFFFFFFFFFFF
+        number: 0xFFFFFFF
+        number: 0xFFFFFFFFFFFFFFF
+        number: 0x7EFEFEFF
+        number: 0x81010101
+        number: 0x81010100
+        number: 0x7EFEFEFEFEFEFEFF
+        number: 0x8101010101010101
+        number: 0x8101010101010100
+basic block @ 0x41AA97
+  and:
+    characteristic: tight loop @ 0x41AA97
+    characteristic: nzxor @ 0x41AA9D, 0x41AAA5, 0x41AAB0, 0x41AAB8, and 12 more...
+    not:
+      or:
+        number: 0xFFFFFFFF
+        number: 0xFFFFFFFFFFFFFFFF
+        number: 0xFFFFFFF
+        number: 0xFFFFFFFFFFFFFFF
+        number: 0x7EFEFEFF
+        number: 0x81010101
+        number: 0x81010100
+        number: 0x7EFEFEFEFEFEFEFF
+        number: 0x8101010101010101
+        number: 0x8101010101010100
+basic block @ 0x41AB42
+  and:
+    characteristic: tight loop @ 0x41AB42
+    characteristic: nzxor @ 0x41AB45, 0x41AB4D
+    not:
+      or:
+        number: 0xFFFFFFFF
+        number: 0xFFFFFFFFFFFFFFFF
+        number: 0xFFFFFFF
+        number: 0xFFFFFFFFFFFFFFF
+        number: 0x7EFEFEFF
+        number: 0x81010101
+        number: 0x81010100
+        number: 0x7EFEFEFEFEFEFEFF
+        number: 0x8101010101010101
+        number: 0x8101010101010100
+
+contain a resource (.rsrc) section
+namespace  executable/pe/section/rsrc
+author     moritz.raabe@fireeye.com
+scope      file
+examples   A933A1A402775CFA94B6BEE0963F4B46:0x41fd25
+section: .rsrc @ 0x448000
+
+query environment variable
+namespace  host-interaction/environment-variable
+author     michael.hunhoff@fireeye.com
+scope      function
+examples   Practical Malware Analysis Lab 14-02.exe_:0x401880
+function @ 0x42D9FE
+  or:
+    api: kernel32.GetEnvironmentStrings @ 0x42DA07
+
+set environment variable
+namespace  host-interaction/environment-variable
+author     michael.hunhoff@fireeye.com
+scope      function
+examples   Practical Malware Analysis Lab 11-03.exe_:0x406580
+function @ 0x42DDDF
+  or:
+    api: kernel32.SetEnvironmentVariable @ 0x42DC76
+
+get common file path
+namespace  host-interaction/file-system
+author     moritz.raabe@fireeye.com
+scope      function
+examples   Practical Malware Analysis Lab 03-02.dll_:0x10003415, 972B219F18379907A045431303F4DA7D:0x404887
+function @ 0x428513
+  or:
+    api: GetCurrentDirectory @ 0x42854C, 0x42857F
+
+enumerate files via kernel32 functions
+namespace  host-interaction/file-system/files/list
+author     moritz.raabe@fireeye.com
+scope      function
+att&ck     Discovery::File and Directory Discovery [T1083]
+examples   Practical Malware Analysis Lab 01-01.exe_:0x4011E0, Practical Malware Analysis Lab 20-02.exe_:0x401000
+function @ 0x42CFB8
+  and:
+    or:
+      api: kernel32.FindFirstFileEx @ 0x42D064
+    or:
+      api: kernel32.FindNextFile @ 0x42D0F5
+    optional:
+      api: kernel32.FindClose @ 0x42D08B
+      match: contain loop @ 0x42CFB8
+        or:
+          characteristic: loop @ 0x42CFB8
+
+read file (4 matches)
+namespace  host-interaction/file-system/read
+author     moritz.raabe@fireeye.com
+scope      function
+examples   BFB9B5391A13D0AFD787E87AB90F14F5:0x1314567B
+function @ 0x421557
+  or:
+    and:
+      or:
+        api: kernel32.ReadFile @ 0x42161E
+function @ 0x429B1F
+  or:
+    and:
+      or:
+        api: kernel32.ReadFile @ 0x429BC8
+function @ 0x429C6B
+  or:
+    and:
+      or:
+        api: kernel32.ReadFile @ 0x429D45
+function @ 0x42A0EA
+  or:
+    and:
+      or:
+        api: kernel32.ReadFile @ 0x42A3E2
+
+write file (5 matches)
+namespace  host-interaction/file-system/write
+author     william.ballenthin@fireeye.com
+scope      function
+examples   Practical Malware Analysis Lab 01-04.exe_:0x4011FC, 563653399B82CD443F120ECEFF836EA3678D4CF11D9B351BB737573C2D856299:0x1400025C4
+function @ 0x42BC36
+  and:
+    or:
+      api: kernel32.WriteFile @ 0x42BD63, 0x42BD9D
+function @ 0x42BEDD
+  and:
+    or:
+      api: kernel32.WriteFile @ 0x42BF78
+function @ 0x42BFBC
+  and:
+    or:
+      api: kernel32.WriteFile @ 0x42C066
+function @ 0x42C0AA
+  and:
+    or:
+      api: kernel32.WriteFile @ 0x42C18B
+function @ 0x42C2BF
+  and:
+    or:
+      api: kernel32.WriteFile @ 0x42C43A
+
+get disk information (2 matches)
+namespace  host-interaction/hardware/storage
+author     moritz.raabe@fireeye.com
+scope      function
+att&ck     Discovery::System Information Discovery [T1082]
+examples   9324D1A8AE37A36AE560C37448C9705A:0x4052A0, 972B219F18379907A045431303F4DA7D:0x41064E
+function @ 0x420C48
+  or:
+    api: kernel32.GetDriveType @ 0x420CC8
+function @ 0x43133F
+  or:
+    api: kernel32.GetDriveType @ 0x43139E
+
+terminate process (3 matches)
+namespace  host-interaction/process/terminate
+author     moritz.raabe@fireeye.com
+scope      function
+examples   C91887D861D9BD4A5872249B641BC9F9:0x401A77
+function @ 0x41CF24
+  and:
+    or:
+      api: kernel32.TerminateProcess @ 0x41CF44
+function @ 0x420F47
+  and:
+    or:
+      api: kernel32.TerminateProcess @ 0x420F73
+function @ 0x424063
+  and:
+    or:
+      api: kernel32.TerminateProcess @ 0x42408C
+
+link function at runtime
+namespace  linking/runtime-linking
+author     moritz.raabe@fireeye.com
+scope      function
+att&ck     Execution::Shared Modules [T1129]
+examples   9324D1A8AE37A36AE560C37448C9705A:0x404130, Practical Malware Analysis Lab 01-04.exe_:0x401350
+function @ 0x4240E9
+  and:
+    or:
+      api: kernel32.GetModuleHandleEx @ 0x424109
+    or:
+      api: kernel32.GetProcAddress @ 0x42411C
+    optional:
+      characteristic: indirect call @ 0x424133
+
+parse PE header (11 matches)
+namespace  load-code/pe
+author     moritz.raabe@fireeye.com
+scope      function
+att&ck     Execution::Shared Modules [T1129]
+examples   9324D1A8AE37A36AE560C37448C9705A:0x403DD0
+function @ 0x402496
+  or:
+    and:
+      mnemonic: cmp @ 0x40252F, 0x402555, 0x40255E, 0x4025ED, and 61 more...
+      or:
+        and:
+          number: 0x50 @ 0x403C47, 0x403DCC, 0x403E9A, 0x403FAE, and 2 more...
+          number: 0x45 @ 0x402758
+      or:
+        and:
+          number: 0x4D @ 0x404856
+          number: 0x5A @ 0x404E5A
+function @ 0x40DF90
+  or:
+    and:
+      mnemonic: cmp @ 0x40DFED, 0x40E074, 0x40E0C6, 0x40E116, and 110 more...
+      or:
+        and:
+          number: 0x50 @ 0x410248, 0x4106D1, 0x410968, 0x410BBD, and 5 more...
+          number: 0x45 @ 0x40EA0F, 0x4101D6, 0x410294, 0x4129C0, and 1 more...
+      or:
+        and:
+          number: 0x4D @ 0x4101B0, 0x410E5E, 0x410FF0, 0x4111C4, and 2 more...
+          number: 0x5A @ 0x410ECF, 0x413978
+function @ 0x41AEFC
+  or:
+    and:
+      mnemonic: cmp @ 0x41AF33, 0x41AFDE, 0x41B004, 0x41B038, and 11 more...
+      or:
+        number: 0x4550 = IMAGE_DOS_SIGNATURE (MZ) @ 0x41B20A
+      or:
+        number: 0x5A4D = IMAGE_NT_SIGNATURE (PE) @ 0x41B1F5
+function @ 0x41BAA8
+  or:
+    and:
+      or:
+        and:
+          offset: 0x50 = IMAGE_NT_HEADERS.OptionalHeader.SizeOfImage @ 0x41BD47, 0x41BD53
+          offset: 0x34 = IMAGE_NT_HEADERS.OptionalHeader.ImageBase @ 0x41BE23
+        and:
+          offset: 0x50 = IMAGE_NT_HEADERS64.OptionalHeader.SizeOfImage @ 0x41BD47, 0x41BD53
+          offset: 0x30 = IMAGE_NT_HEADERS64.OptionalHeader.ImageBase @ 0x41BE20
+function @ 0x41C507
+  or:
+    and:
+      mnemonic: cmp @ 0x41C51C, 0x41C52A, 0x41C53B, 0x41C55B
+      or:
+        number: 0x4550 = IMAGE_DOS_SIGNATURE (MZ) @ 0x41C52A
+      or:
+        number: 0x5A4D = IMAGE_NT_SIGNATURE (PE) @ 0x41C517
+function @ 0x41CCB1
+  or:
+    and:
+      mnemonic: cmp @ 0x41CCC2, 0x41CCCC, 0x41CCD9, 0x41CCDF, and 1 more...
+      or:
+        number: 0x4550 = IMAGE_DOS_SIGNATURE (MZ) @ 0x41CCCC
+      or:
+        number: 0x5A4D = IMAGE_NT_SIGNATURE (PE) @ 0x41CCBD
+function @ 0x41DA40
+  or:
+    and:
+      or:
+        and:
+          offset: 0x50 = IMAGE_NT_HEADERS64.OptionalHeader.SizeOfImage @ 0x41DAD8
+          offset: 0x30 = IMAGE_NT_HEADERS64.OptionalHeader.ImageBase @ 0x41DACE
+function @ 0x41E6F0
+  or:
+    and:
+      or:
+        and:
+          offset: 0x50 = IMAGE_NT_HEADERS64.OptionalHeader.SizeOfImage @ 0x41EA98, 0x41EABF, 0x41EB8B, 0x41EB9F
+          offset: 0x30 = IMAGE_NT_HEADERS64.OptionalHeader.ImageBase @ 0x41E7D9, 0x41E7DE, 0x41E810, 0x41E835, and 9 more...
+function @ 0x41FA90
+  or:
+    and:
+      or:
+        and:
+          offset: 0x50 = IMAGE_NT_HEADERS64.OptionalHeader.SizeOfImage @ 0x41FE38, 0x41FE5F, 0x41FF2B, 0x41FF3F
+          offset: 0x30 = IMAGE_NT_HEADERS64.OptionalHeader.ImageBase @ 0x41FB79, 0x41FB7E, 0x41FBB0, 0x41FBD5, and 9 more...
+function @ 0x4240A5
+  or:
+    and:
+      mnemonic: cmp @ 0x4240BB, 0x4240C5, 0x4240D2, 0x4240D8, and 1 more...
+      or:
+        number: 0x4550 = IMAGE_DOS_SIGNATURE (MZ) @ 0x4240C5
+      or:
+        number: 0x5A4D = IMAGE_NT_SIGNATURE (PE) @ 0x4240B6
+function @ 0x437A00
+  or:
+    and:
+      mnemonic: cmp @ 0x437A0B, 0x437A15, 0x437A22
+      or:
+        number: 0x4550 = IMAGE_DOS_SIGNATURE (MZ) @ 0x437A15
+      or:
+        number: 0x5A4D = IMAGE_NT_SIGNATURE (PE) @ 0x437A06
+
