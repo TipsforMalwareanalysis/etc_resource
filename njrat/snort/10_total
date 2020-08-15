@@ -1,4 +1,4 @@
-alert tcp any any -> any any (msg:"[Njrat] njrat Frist Message"; flow:from_client,established; content:"|00|ll"; fast_pattern; classtype:trojan-activity; sid:10000001; rev:1;)
+alert tcp any any -> any any (msg:"[Njrat] njrat Frist Message"; flow:from_client,established; content:"|00|ll"; nocase; fast_pattern; classtype:trojan-activity; sid:10000001; rev:1;)
 alert tcp any any -> any any (msg:"[Njrat] njrat Seconod Message"; flow:from_client,established; content:"|00|inf"; fast_pattern; classtype:trojan-activity; sid:10000002; rev:1)
 alert tcp any any -> any any (msg:"[Njrat] Manager-File"; flow:to_client,established; pcre:"/\x00Ex.*fm/"; classtype:trojan-activity; sid:10000003; rev:1)
 alert tcp any any -> any any (msg:"[Njrat] Manager-Proc"; flow:to_client,established; pcre:"/\x00Ex.*proc/"; classtype:trojan-activity; sid:10000004; rev:1)
