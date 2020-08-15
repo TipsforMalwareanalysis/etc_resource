@@ -1,1 +1,1 @@
-alert tcp any any -> any any (msg:"[Test] Process Listing)"; flow:from_client,established; content:"|00|proc"; fast_pattern; classtype:trojan-activity; sid:1000001; rev:1;)
+alert tcp any any -> any any (msg:"[Njrat] Process Listing)"; flow:from_client,established; content:"|00|proc"; fast_pattern; classtype:trojan-activity; sid:1000001; rev:1;)
