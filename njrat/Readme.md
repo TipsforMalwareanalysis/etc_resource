@@ -19,3 +19,8 @@
 <br> <br>
 
 ![1_RequestConnectFromClient_flow](images/1_RequestConnectFromClient_flow.png)
+
+
+# 참고자료
+* [1] njrat 스노트: https://github.com/dfirrequests/NetworkRequest/issues/1
+* [2] security onion njrat 스노트 : /nsm/rules/downloads.rules
