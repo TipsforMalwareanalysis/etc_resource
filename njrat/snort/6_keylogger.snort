@@ -1,0 +1,2 @@
+alert tcp any any -> any any (msg:"[Njrat] Keylogger"; flow:to_client,established; content:"|00|kl"; fast_pattern; classtype:trojan-activity; sid:10000011; rev:1)
+alert tcp any any -> any any (msg:"[Njrat] Keylogger"; flow:to_server,established; content:"|00|kl"; fast_pattern; classtype:trojan-activity; sid:10000012; rev:1)
