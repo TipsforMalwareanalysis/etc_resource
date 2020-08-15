@@ -1,7 +1,11 @@
 # 패킷파일 설명
-| 패킷 이름 | 내용 | 분석관점 |
+| 패킷 이름 | 내용 | 명령어 키워드 |
 | ------ | ---------- | -------|
-| 1_RequestConnectFromClient.pcap | 감염된 클라이언트가 세션생성 요청 | ii, inf 명령어 |
+| 1_RequestConnectFromClient.pcap | 감염된 클라이언트가 세션생성 요청 | ii, inf |
+| 2_Manager.pcap | Manager 메뉴 | Ex + fm, Ex + proc, Ex + tcp, Ex + rg, Ex + rs|
+| 3_RunFile_link.pcap | 네트워크에 존재하는 파일실행 | rn + 실행포맷 + 실행경로 |
+| 3_RunFile_localfile.pcap | 공격자 서버의 파일실행 | rn + 실행포맷 + 파일바이너리 |
+| 3_RunFile_script.pcap | 스크립트 실행 | rn + 스크립트포맷 + 스크립트 내용 |
 
 <br>
 
