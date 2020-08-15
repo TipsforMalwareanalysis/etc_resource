@@ -1,1 +1,0 @@
-alert tcp any any -> any any (msg:"[Njrat] RemoteCam"; flow:to_client,established; content:"|00|inv"; fast_pattern; classtype:trojan-activity; sid:10000009; rev:1)
