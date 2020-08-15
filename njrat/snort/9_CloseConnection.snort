@@ -1,0 +1,1 @@
+alert tcp any any -> any any (msg:"[Njrat] CloseConnection"; flow:to_client,established; pcre:"/\x00un.*!/"; classtype:trojan-activity; sid:10000016; rev:1)
