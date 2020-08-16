@@ -1,3 +1,4 @@
+성능 비효율(정규식:.*)
 alert tcp any any -> any any (msg:"[Njrat] Manager-File"; flow:to_client,established; pcre:"/\x00Ex.*fm/"; classtype:trojan-activity; sid:10000003; rev:1)
 alert tcp any any -> any any (msg:"[Njrat] Manager-Proc"; flow:to_client,established; pcre:"/\x00Ex.*proc/"; classtype:trojan-activity; sid:10000004; rev:1)
 alert tcp any any -> any any (msg:"[Njrat] Manager-Network"; flow:to_client,established; pcre:"/\x00Ex.*tcp/"; classtype:trojan-activity; sid:10000005; rev:1)

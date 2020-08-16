@@ -1,0 +1,1 @@
+alert tcp any any -> any any (msg:"[Njrat] Chat"; flow:to_server,established; content:"|00|CH"; nocase; classtype:trojan-activity; sid:10000018; rev:1)
