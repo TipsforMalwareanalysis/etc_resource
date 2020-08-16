@@ -9,3 +9,4 @@ alert tcp any any -> any any (msg:"[Njrat] uninstall njrat"; flow:to_client,esta
 alert tcp any any -> any any (msg:"[Njrat] CloseConnection"; flow:to_client,established; pcre:"/\x00un.*!/"; classtype:trojan-activity; sid:10000016; rev:1)
 alert tcp any any -> any any (msg:"[Njrat] RemoteDesktop"; flow:to_server,established; content:"|00|sc~"; nocase; classtype:trojan-activity; sid:10000017; rev:1)
 alert tcp any any -> any any (msg:"[Njrat] RemoteDesktop Response"; flow:to_server,established; content:"|00|scPK"; nocase; classtype:trojan-activity; sid:10000018; rev:1)
+alert tcp any any -> any any (msg:"[Njrat] Chat"; flow:to_server,established; content:"|00|CH"; nocase; classtype:trojan-activity; sid:10000018; rev:1)
