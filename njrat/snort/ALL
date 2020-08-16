@@ -1,7 +1,6 @@
 alert tcp any any -> any any (msg:"[Njrat] njrat Frist Message"; flow:from_client,established; content:"|00|ll"; nocase; fast_pattern; classtype:trojan-activity; sid:10000001; rev:1;)
 alert tcp any any -> any any (msg:"[Njrat] njrat Seconod Message"; flow:from_client,established; content:"|00|inf"; fast_pattern; classtype:trojan-activity; sid:10000002; rev:1)
 alert tcp any any -> any any (msg:"[Njrat] RunFile"; flow:to_client,established; content:"|00|rn"; fast_pattern; classtype:trojan-activity; sid:10000008; rev:1)
-alert tcp any any -> any any (msg:"[Njrat] RunFile"; flow:to_client,established; content:"|00|rn"; fast_pattern; classtype:trojan-activity; sid:10000008; rev:1)
 alert tcp any any -> any any (msg:"[Njrat] Connect the something(Remote desktop, cam etc)"; flow:to_client,established; content:"|00|inv"; fast_pattern; classtype:trojan-activity; sid:10000009; rev:1)
 alert tcp any any -> any any (msg:"[Njrat] StealPassword"; flow:to_client,established; content:"|00|ret"; fast_pattern; classtype:trojan-activity; sid:10000010; rev:1)
 alert tcp any any -> any any (msg:"[Njrat] restart njrat"; flow:to_client,established; pcre:"/\x00un.*@/"; classtype:trojan-activity; sid:10000013; rev:1)
@@ -10,3 +9,4 @@ alert tcp any any -> any any (msg:"[Njrat] CloseConnection"; flow:to_client,esta
 alert tcp any any -> any any (msg:"[Njrat] RemoteDesktop"; flow:to_server,established; content:"|00|sc~"; nocase; classtype:trojan-activity; sid:10000017; rev:1)
 alert tcp any any -> any any (msg:"[Njrat] RemoteDesktop Response"; flow:to_server,established; content:"|00|scPK"; nocase; classtype:trojan-activity; sid:10000018; rev:1)
 alert tcp any any -> any any (msg:"[Njrat] Chat"; flow:to_server,established; content:"|00|CH"; nocase; classtype:trojan-activity; sid:10000018; rev:1)
+alert tcp any any -> any any (msg:"[Njrat] Capture"; flow:to_client,established; content:"|00|CAP"; nocase; fast_pattern; classtype:trojan-activity; sid:10000019; rev:1)
