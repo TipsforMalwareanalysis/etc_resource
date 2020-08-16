@@ -31,4 +31,4 @@ LOCAL_NIDS_RULE_TUNING=yes
 
 # 참고자료
 * [1] njrat 스노트: https://github.com/dfirrequests/NetworkRequest/issues/1
-* [2] security onion njrat 스노트 : /nsm/rules/downloads.rules
+* [2] security onion njrat 스노트 : /etc/nsm/rules/downloads.rules
